@@ -13,7 +13,7 @@ OS.
 Example: macOS
 
 ```shell
-curl -OL https://github.com/pravaah-dev/airbyte-replication-operator/releases/airbyte-replication-operator-aarch64-apple-darwin.tar.gz
+curl -OL https://github.com/h7kanna/airbyte-replication-operator/releases/download/v0.0.1/airbyte-replication-operator-aarch64-apple-darwin.tar.gz
 tar -xvf airbyte-replication-operator-aarch64-apple-darwin.tar.gz
 ./airbyte-replication-driver --help
 
