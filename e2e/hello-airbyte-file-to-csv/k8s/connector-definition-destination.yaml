@@ -1,0 +1,81 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: ConnectorDefinition
+metadata:
+  name: destination-csv
+  labels:
+    app.kubernetes.io/name: destination-csv
+    app.oam.dev/type: airbyte-connector-definition
+    app.oam.dev/name: destination-csv
+spec:
+  id: destination-csv
+  name: destination-csv
+  imageRepository: airbyte/destination-csv
+  imageTag: 1.0.0
+  kind: destination
+  spec:
+    documentationUrl: https://docs.airbyte.com/integrations/destinations/local-csv
+    connectionSpecification:
+      apiVersion: airbyte.pravaah.dev/v1alpha1
+      kind: ConnectionSpecification
+      "$schema": http://json-schema.org/draft-07/schema#
+      title: CSV Destination Spec
+      type: object
+      required:
+        - destination_path
+      additionalProperties: true
+      properties:
+        destination_path:
+          description: Path to the directory where csv files will be written. The destination
+            uses the local mount "/local" and any data files will be placed inside that
+            local mount. For more information check out our <a href="https://docs.airbyte.com/integrations/destinations/local-csv">docs</a>
+          type: string
+          examples:
+            - "/local"
+        delimiter_type:
+          type: object
+          title: Delimiter
+          description: The character delimiting individual cells in the CSV data.
+          oneOf:
+            - title: Comma
+              required:
+                - delimiter
+              properties:
+                delimiter:
+                  type: string
+                  const: "\\u002c"
+            - title: Semicolon
+              required:
+                - delimiter
+              properties:
+                delimiter:
+                  type: string
+                  const: "\\u003b"
+            - title: Pipe
+              required:
+                - delimiter
+              properties:
+                delimiter:
+                  type: string
+                  const: "\\u007c"
+            - title: Tab
+              required:
+                - delimiter
+              properties:
+                delimiter:
+                  type: string
+                  const: "\\u0009"
+            - title: Space
+              required:
+                - delimiter
+              properties:
+                delimiter:
+                  type: string
+                  const: "\\u0020"
+    supportsIncremental: true
+    supportsNormalization: false
+    supportsDBT: false
+    supportedDestinationSyncModes:
+      - overwrite
+      - append
+
+

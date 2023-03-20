@@ -1,0 +1,11 @@
+version: '3'
+services:
+  init:
+    volumes:
+      - ${PWD}/target/debug/airbyte-replication-driver:/usr/local/bin/airbyte-replication-driver
+  destination:
+    volumes:
+      - ${PWD}/target/debug/airbyte-replication-driver:/storage/airbyte-replication-driver
+  source:
+    volumes:
+      - ${PWD}/target/debug/airbyte-replication-driver:/storage/airbyte-replication-driver

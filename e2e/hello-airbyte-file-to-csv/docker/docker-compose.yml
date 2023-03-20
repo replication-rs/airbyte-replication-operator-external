@@ -1,0 +1,53 @@
+version: '3'
+services:
+  init:
+    image: h7kanna/airbyte-replication-operator:0.0.1
+    command:
+      - airbyte-replication-driver
+      - --command
+      - init
+      - --replication
+      - hello-airbyte-file-to-csv
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - ${PWD}/local:/local
+      - storage:/storage
+      - tmp:/tmp
+    user: root
+  destination:
+    image: airbyte/destination-csv:1.0.0
+    entrypoint:
+      - /storage/airbyte-replication-driver
+      - --command
+      - destination
+      - --replication
+      - hello-airbyte-file-to-csv
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - ${PWD}/local:/local
+      - storage:/storage
+      - tmp:/tmp
+    depends_on:
+      - init
+  source:
+    image: airbyte/source-file:0.2.33
+    entrypoint:
+      - /storage/airbyte-replication-driver
+      - --command
+      - source
+      - --replication
+      - hello-airbyte-file-to-csv
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - ${PWD}/local:/local
+      - storage:/storage
+      - tmp:/tmp
+    depends_on:
+      - init
+volumes:
+  pipes:
+  storage:
+  tmp:

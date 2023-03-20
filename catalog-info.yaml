@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: airbyte-replication-operator
+  description: An implementation of Airbyte Protocol in Rust
+  annotations:
+    github.com/project-slug: github.com/pravaah-dev/airbyte-replication-operator
+    backstage.io/techdocs-ref: url:https://github.com/pravaah-dev/airbyte-replication-operator/blob/main
+    backstage.io/adr-location: https://github.com/pravaah-dev/airbyte-replication-operator/blob/main/adrs
+spec:
+  type: service
+  owner: h7kanna@gmail.com
+  lifecycle: experimental
+  system: pravaah

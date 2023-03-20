@@ -1,0 +1,23 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: hello-airbyte-file-to-csv
+spec:
+  components:
+    - name: hello-airbyte-file-to-csv
+      type: k8s-objects
+      properties:
+        objects:
+          - apiVersion: airbyte.pravaah.dev/v1alpha1
+            kind: Replication
+            metadata:
+              name: hello-airbyte-file-to-csv
+              labels:
+                app.kubernetes.io/name: hello-airbyte-file-to-csv
+                app.oam.dev/type: airbyte-connection
+                app.oam.dev/name: hello-airbyte-file-to-csv
+            spec:
+              connectionRef:
+                name: hello-airbyte-file-to-csv
+                namespace: default
+              name: hello-airbyte-file-to-csv

@@ -1,0 +1,23 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name:  hello-airbyte-s3-to-s3
+spec:
+  components:
+    - name:  hello-airbyte-s3-to-s3
+      type: k8s-objects
+      properties:
+        objects:
+          - apiVersion: airbyte.pravaah.dev/v1alpha1
+            kind: Replication
+            metadata:
+              name:  hello-airbyte-s3-to-s3
+              labels:
+                app.kubernetes.io/name:  hello-airbyte-s3-to-s3
+                app.oam.dev/type: airbyte-connection
+                app.oam.dev/name:  hello-airbyte-s3-to-s3
+            spec:
+              connectionRef:
+                name: hello-airbyte-s3-to-s3
+                namespace: default
+              name:  hello-airbyte-s3-to-s3

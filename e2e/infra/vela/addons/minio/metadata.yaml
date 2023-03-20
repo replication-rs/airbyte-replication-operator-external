@@ -1,0 +1,14 @@
+name: minio
+version: 0.1.0
+description: Minio.
+icon: https://github.com/open-cluster-management-io/OCM/raw/main/assets/ocm-logo.png
+url: https://github.com/minio/minio
+
+tags:
+  - minio
+
+deployTo:
+  control_plane: true
+  runtime_cluster: true
+
+invisible: false

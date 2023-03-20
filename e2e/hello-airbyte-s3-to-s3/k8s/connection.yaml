@@ -1,0 +1,124 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connection
+metadata:
+  name:  hello-airbyte-s3-to-s3
+  labels:
+    app.kubernetes.io/name:  hello-airbyte-s3-to-s3
+    app.oam.dev/type: airbyte-connection
+    app.oam.dev/name:  hello-airbyte-s3-to-s3
+spec:
+  sourceRef:
+    name: source-s3-test
+    namespace: default
+  destinationRef:
+    name: destination-s3-test
+    namespace: default
+  catalog:
+    streams:
+      - stream:
+          name: nyc_green_2022
+          json_schema:
+            apiVersion: airbyte.pravaah.dev/v1alpha1
+            kind: JsonSchema
+            "$schema": http://json-schema.org/draft-07/schema#
+            type: object
+            properties:
+              extra:
+                type:
+                  - 'null'
+                  - number
+              mta_tax:
+                type:
+                  - 'null'
+                  - number
+              VendorID:
+                type:
+                  - 'null'
+                  - integer
+              RatecodeID:
+                type:
+                  - 'null'
+                  - number
+              tip_amount:
+                type:
+                  - 'null'
+                  - number
+              airport_fee:
+                type:
+                  - 'null'
+                  - number
+              fare_amount:
+                type:
+                  - 'null'
+                  - number
+              DOLocationID:
+                type:
+                  - 'null'
+                  - integer
+              PULocationID:
+                type:
+                  - 'null'
+                  - integer
+              payment_type:
+                type:
+                  - 'null'
+                  - integer
+              tolls_amount:
+                type:
+                  - 'null'
+                  - number
+              total_amount:
+                type:
+                  - 'null'
+                  - number
+              trip_distance:
+                type:
+                  - 'null'
+                  - number
+              passenger_count:
+                type:
+                  - 'null'
+                  - number
+              store_and_fwd_flag:
+                type:
+                  - 'null'
+                  - string
+              _ab_source_file_url:
+                type: string
+              congestion_surcharge:
+                type:
+                  - 'null'
+                  - number
+              tpep_pickup_datetime:
+                type:
+                  - 'null'
+                  - string
+              improvement_surcharge:
+                type:
+                  - 'null'
+                  - number
+              tpep_dropoff_datetime:
+                type:
+                  - 'null'
+                  - string
+              _ab_additional_properties:
+                type: object
+              _ab_source_file_last_modified:
+                type: string
+                format: date-time
+          default_cursor_field:
+            - _ab_source_file_last_modified
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+          source_defined_cursor: true
+          source_defined_primary_key: [ ]
+        sync_mode: full_refresh
+        primary_key: [ ]
+        cursor_field:
+          - _ab_source_file_last_modified
+        destination_sync_mode: overwrite
+  schedule:
+    units: 1
+    timeUnit: minutes
+  scheduleType: manual

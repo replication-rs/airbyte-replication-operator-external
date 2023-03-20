@@ -1,0 +1,18 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connector
+metadata:
+  name: destination-csv-test
+  labels:
+    app.kubernetes.io/name: destination-csv-test
+    app.oam.dev/type: airbyte-connector
+    app.oam.dev/name: destination-csv-test
+spec:
+  connectorDefinitionRef:
+    name: destination-csv
+    namespace: default
+  spec:
+    apiVersion: airbyte.pravaah.dev/v1alpha1
+    kind: ConnectionSpecification
+    destination_path: "/storage"
+    delimiter_type:
+      delimiter: "\\u0009"

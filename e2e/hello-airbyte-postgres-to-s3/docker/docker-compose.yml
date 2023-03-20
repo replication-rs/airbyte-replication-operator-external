@@ -1,0 +1,50 @@
+version: '3'
+services:
+  init:
+    image: h7kanna/airbyte-replication-operator:0.0.1
+    command:
+      - airbyte-replication-driver
+      - --command
+      - init
+      - --replication
+      - hello-airbyte-postgres-to-s3
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - storage:/storage
+      - tmp:/tmp
+    user: root
+  destination:
+    image: airbyte/destination-s3:0.3.21
+    entrypoint:
+      - /storage/airbyte-replication-driver
+      - --command
+      - destination
+      - --replication
+      - hello-airbyte-postgres-to-s3
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - storage:/storage
+      - tmp:/tmp
+    depends_on:
+      - init
+  source:
+    image: airbyte/source-postgres:2.0.3
+    entrypoint:
+      - /storage/airbyte-replication-driver
+      - --command
+      - source
+      - --replication
+      - hello-airbyte-postgres-to-s3
+    volumes:
+      - pipes:/pipes
+      - ${PWD}/secrets:/secrets
+      - storage:/storage
+      - tmp:/tmp
+    depends_on:
+      - init
+volumes:
+  pipes:
+  storage:
+  tmp:

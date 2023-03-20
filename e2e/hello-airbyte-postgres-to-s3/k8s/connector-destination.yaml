@@ -1,0 +1,26 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connector
+metadata:
+  name: destination-s3-test
+  labels:
+    app.kubernetes.io/name: destination-s3-test
+    app.oam.dev/type: airbyte-connector
+    app.oam.dev/name: destination-s3-test
+spec:
+  connectorDefinitionRef:
+    name: destination-s3
+    namespace: default
+  spec:
+    apiVersion: airbyte.pravaah.dev/v1alpha1
+    kind: ConnectionSpecification
+    format:
+      flattening: No flattening
+      compression:
+        compression_type: No Compression
+      format_type: CSV
+    s3_endpoint: http://192.168.86.123:9000
+    access_key_id: "minio"
+    s3_bucket_name: airbyte-replication-operator-s3-output
+    s3_bucket_path: "/"
+    s3_bucket_region: us-east-1
+    secret_access_key: "miniostorage"

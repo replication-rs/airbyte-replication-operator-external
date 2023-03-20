@@ -1,0 +1,28 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connector
+metadata:
+  name: source-s3-test
+  labels:
+    app.kubernetes.io/name: source-s3-test
+    app.oam.dev/type: airbyte-connector
+    app.oam.dev/name: source-s3-test
+spec:
+  connectorDefinitionRef:
+    name: source-s3
+    namespace: default
+  spec:
+    apiVersion: airbyte.pravaah.dev/v1alpha1
+    kind: ConnectionSpecification
+    format:
+      filetype: parquet
+      batch_size: 65536
+      buffer_size: 2
+    schema: "{}"
+    dataset: nyc_green_2022
+    provider:
+      bucket: nyc-taxi-data
+      endpoint: http://192.168.86.123:9000
+      path_prefix: ''
+      aws_access_key_id: "minio"
+      aws_secret_access_key: "miniostorage"
+    path_pattern: "**"

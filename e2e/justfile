@@ -1,0 +1,12 @@
+NAME := "testdata"
+ORG := "airbyte-replication-operator"
+VERSION := `git rev-parse HEAD`
+SEMVER_VERSION := `grep version Cargo.toml | awk -F"\"" '{print $2}' | head -n 1`
+
+default:
+  @just --list --unsorted --color=always | rg -v "    default"
+
+dirs:
+  @mkdir -p tmp
+  @mkdir -p bin
+  @mkdir -p datasets

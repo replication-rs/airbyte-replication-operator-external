@@ -1,0 +1,52 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connection
+metadata:
+  name: hello-airbyte-file-to-csv
+  labels:
+    app.kubernetes.io/name: hello-airbyte-file-to-csv
+    app.oam.dev/type: airbyte-connection
+    app.oam.dev/name: hello-airbyte-file-to-csv
+spec:
+  sourceRef:
+    name: source-file-test
+    namespace: default
+  destinationRef:
+    name: destination-csv-test
+    namespace: default
+  catalog:
+    streams:
+      - stream:
+          name: test
+          json_schema:
+            apiVersion: airbyte.pravaah.dev/v1alpha1
+            kind: JsonSchema
+            "$schema": http://json-schema.org/draft-07/schema#
+            type: object
+            properties:
+              name:
+                type:
+                  - string
+                  - 'null'
+              type:
+                type:
+                  - string
+                  - 'null'
+              size:
+                type:
+                  - string
+                  - 'null'
+              modified:
+                type:
+                  - string
+                  - 'null'
+          supported_sync_modes:
+            - full_refresh
+        sync_mode: full_refresh
+        cursor_field:
+          - modified
+        destination_sync_mode: append
+        primary_key: [ ]
+  schedule:
+    units: 1
+    timeUnit: minutes
+  scheduleType: manual

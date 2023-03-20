@@ -1,0 +1,50 @@
+---
+# Main deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airbyte-replication-operator
+  namespace: default
+  labels:
+    app: airbyte-replication-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airbyte-replication-operator
+  template:
+    metadata:
+      labels:
+        app: airbyte-replication-operator
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    spec:
+      serviceAccountName: airbyte-replication-operator
+      containers:
+        - name: airbyte-replication-operator
+          image: h7kanna/airbyte-replication-operator:0.0.1
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            # We are pointing to tempo or grafana tracing agent's otlp grpc receiver port
+            - name: OPENTELEMETRY_ENDPOINT_URL
+              value: "https://promstack-tempo.monitoring.svc.cluster.local:4317"
+            - name: RUST_LOG
+              value: "info,kube=debug,controller=debug"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5

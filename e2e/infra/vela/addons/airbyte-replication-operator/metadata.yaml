@@ -1,0 +1,20 @@
+name: airbyte-operator
+version: 0.1.0
+description: A Kubernetes operator for Airbyte replications
+icon: https://github.com/open-cluster-management-io/OCM/raw/main/assets/ocm-logo.png
+url: https://github.com/pravaah-dev/airbyte-replication-operator
+
+tags:
+  - airbyte
+  - kubernetes
+  - controller
+  - data-integration
+
+deployTo:
+  control_plane: true
+  runtime_cluster: true
+
+invisible: false
+
+system:
+  vela: ">=1.7.5"

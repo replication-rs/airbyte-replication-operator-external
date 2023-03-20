@@ -1,0 +1,20 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connector
+metadata:
+  name: source-file-test
+  labels:
+    app.kubernetes.io/name: source-file-test
+    app.oam.dev/type: airbyte-connector
+    app.oam.dev/name: source-file-test
+spec:
+  connectorDefinitionRef:
+    name: source-file
+    namespace: default
+  spec:
+    apiVersion: airbyte.pravaah.dev/v1alpha1
+    kind: ConnectionSpecification
+    dataset_name: test
+    format: csv
+    url: file:///local/input.csv
+    provider:
+      storage: local

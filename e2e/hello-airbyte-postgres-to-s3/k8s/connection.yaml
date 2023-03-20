@@ -1,0 +1,58 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connection
+metadata:
+  name:  hello-airbyte-postgres-to-s3
+  labels:
+    app.kubernetes.io/name:  hello-airbyte-postgres-to-s3
+    app.oam.dev/type: airbyte-connection
+    app.oam.dev/name:  hello-airbyte-postgres-to-s3
+spec:
+  sourceRef:
+    name: source-postgres-test
+    namespace: default
+  destinationRef:
+    name: destination-s3-test
+    namespace: default
+  catalog:
+    streams:
+      - stream:
+          name: airbyte_configs
+          json_schema:
+            type: object
+            properties:
+              updated_at:
+                format: date-time
+                airbyte_type: timestamp_with_timezone
+                type: string
+              config_id:
+                type: string
+              created_at:
+                format: date-time
+                airbyte_type: timestamp_with_timezone
+                type: string
+              config_blob:
+                type: string
+              id:
+                airbyte_type: integer
+                type: number
+              config_type:
+                type: string
+          supported_sync_modes:
+            - full_refresh
+            - incremental
+          default_cursor_field: [ ]
+          source_defined_primary_key:
+            - - id
+          namespace: public
+        sync_mode: full_refresh
+        primary_key:
+          - - id
+        cursor_field: [ ]
+        destination_sync_mode: overwrite
+        alias_name: airbyte_configs
+        selected: true
+        field_selection_enabled: false
+  schedule:
+    units: 1
+    timeUnit: minutes
+  scheduleType: manual

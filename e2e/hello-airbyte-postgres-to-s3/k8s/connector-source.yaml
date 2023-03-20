@@ -1,0 +1,28 @@
+apiVersion: airbyte.pravaah.dev/v1alpha1
+kind: Connector
+metadata:
+  name: source-postgres-test
+  labels:
+    app.kubernetes.io/name: source-postgres-test
+    app.oam.dev/type: airbyte-connector
+    app.oam.dev/name: source-postgres-test
+spec:
+  connectorDefinitionRef:
+    name: source-postgres
+    namespace: default
+  spec:
+    apiVersion: airbyte.pravaah.dev/v1alpha1
+    kind: ConnectionSpecification
+    replication_method:
+      method: Standard
+    tunnel_method:
+      tunnel_method: NO_TUNNEL
+    username: docker
+    ssl_mode:
+      mode: disable
+    password: docker
+    database: airbyte
+    schemas: [ ]
+    port: 5432
+    host: 192.168.86.123
+    ssl: false

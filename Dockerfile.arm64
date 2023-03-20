@@ -1,0 +1,24 @@
+FROM --platform=$TARGETPLATFORM rust:slim as build
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+
+RUN echo "Building on $BUILDPLATFORM for $TARGETPLATFORM"
+RUN rustup target add aarch64-unknown-linux-gnu
+
+WORKDIR /usr/src/airbyte-replication-operator
+
+COPY . .
+
+ENV RUSTFLAGS='-C target-feature=+crt-static'
+
+RUN --mount=type=cache,target=/usr/local/cargo/registry,id=${TARGETPLATFORM}  \
+    --mount=type=cache,target=/usr/src/airbyte-replication-operator/target,id=${TARGETPLATFORM} \
+    cargo install --bins --path . --target aarch64-unknown-linux-gnu
+
+FROM --platform=$TARGETPLATFORM gcr.io/distroless/cc-debian11
+
+COPY --from=build /usr/local/cargo/bin/airbyte-replication-driver /usr/local/bin/airbyte-replication-driver
+COPY --from=build /usr/local/cargo/bin/airbyte-replication-operator /usr/local/bin/airbyte-replication-operator
+USER 65532:65532
+
+CMD ["airbyte-replication-operator"]
